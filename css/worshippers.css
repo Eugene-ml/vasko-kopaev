@@ -1,0 +1,1037 @@
+/* =====================================================================
+   МОЛЯЩИЕСЯ ЧЕЛОВЕЧКИ: the shrine of Saint Vasko and his bowing flock.
+   Every class here starts with w-. Colour tokens come from css/temple.css.
+   ===================================================================== */
+
+#worshippers {
+  max-width: 1240px;
+  overflow-x: clip;
+}
+
+.w-lead {
+  max-width: 54ch;
+}
+
+/* ---------- Stage ---------- */
+
+.w-stage {
+  --u: 84px;
+  --k: 1;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 0 clamp(6px, 2vw, 26px);
+  padding: 76px clamp(6px, 2vw, 24px) 30px;
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid var(--hairline, rgba(245, 197, 66, 0.28));
+  background:
+    radial-gradient(ellipse 55% 50% at 50% 34%, rgba(245, 197, 66, 0.16), transparent 70%),
+    radial-gradient(ellipse 90% 35% at 50% 100%, rgba(122, 52, 190, 0.38), transparent 72%),
+    linear-gradient(180deg, rgba(23, 13, 42, 0.35), rgba(10, 6, 19, 0.75));
+  box-shadow: inset 0 1px 0 rgba(255, 231, 163, 0.08), 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Temple floor: gold tile lines seen in perspective. */
+.w-stage::before {
+  content: "";
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: 0;
+  height: 46%;
+  z-index: -1;
+  background:
+    repeating-linear-gradient(90deg, rgba(245, 197, 66, 0.10) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(0deg, rgba(245, 197, 66, 0.08) 0 1px, transparent 1px 40px);
+  transform: perspective(320px) rotateX(58deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, #000 20%, transparent 95%);
+  mask-image: linear-gradient(to top, #000 20%, transparent 95%);
+  pointer-events: none;
+}
+
+.w-flock {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 0 4px 4px;
+  grid-row: 1;
+}
+
+.w-flock-l { grid-column: 1; }
+.w-flock-r { grid-column: 3; justify-content: flex-start; }
+
+/* ---------- Little people ---------- */
+
+.w-person {
+  position: relative;
+  flex: 0 0 auto;
+  width: calc(var(--u) * var(--s, 1));
+  margin: calc(var(--u) * -0.4) calc(var(--u) * -0.15) 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-body { position: relative; }
+
+.w-fig {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.w-flock-r .w-fig { transform: scaleX(-1); }
+
+.w-shadow { fill: rgba(0, 0, 0, 0.38); }
+
+.w-torso, .w-arm, .w-leg { transform-box: view-box; }
+
+.w-pose-stand .w-leg { transform-origin: 30px 64px; }
+
+.w-pose-stand .w-torso {
+  transform-origin: 30px 64px;
+  animation: w-bow-torso 5s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+.w-pose-stand .w-arm {
+  transform-origin: 30px 44px;
+  animation: w-bow-arms 5s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+.w-pose-kneel .w-torso {
+  transform-origin: 24px 80px;
+  animation: w-kneel-torso 5s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+.w-pose-kneel .w-arm {
+  transform-origin: 24px 58px;
+  animation: w-kneel-arms 5s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+/* Sign holders stand straight, hold the sign forward and hop for joy. */
+.w-pose-sign .w-torso { animation: none; transform: rotate(-3deg); }
+.w-pose-sign .w-arm { animation: none; transform: rotate(-80deg); }
+
+.w-pose-sign .w-body {
+  animation: w-cheer 1.3s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+.w-sign {
+  position: absolute;
+  left: 50%;
+  top: 39%;
+  z-index: 1;
+  width: max-content;
+  max-width: calc(var(--u) * 1.2 * var(--s, 1));
+  padding: 0.28em 0.42em 0.22em;
+  transform: translateX(-50%) rotate(-3deg);
+  transform-origin: 50% 100%;
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: max(7px, calc(var(--u) * 0.135 * var(--s, 1)));
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #6b1230;
+  background: linear-gradient(180deg, #fffbf0, #f3e0b8);
+  border: 1.5px solid #c99a2e;
+  border-radius: 3px;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3), 0 0 12px rgba(245, 197, 66, 0.4);
+  animation: w-sign-wiggle 2.6s ease-in-out infinite;
+  animation-delay: calc(var(--d, 0s) - 30s);
+}
+
+.w-sign::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 1.4em;
+  margin-left: -1px;
+  background: #8a5a2b;
+  z-index: -1;
+}
+
+@keyframes w-bow-torso {
+  0%, 8% { transform: rotate(0deg); }
+  20%, 34% { transform: rotate(-8deg); }
+  54%, 70% { transform: rotate(76deg); }
+  88%, 100% { transform: rotate(0deg); }
+}
+
+@keyframes w-bow-arms {
+  0%, 6% { transform: rotate(0deg); }
+  18% { transform: rotate(-152deg); }
+  23% { transform: rotate(-126deg); }
+  28% { transform: rotate(-154deg); }
+  34% { transform: rotate(-134deg); }
+  54%, 70% { transform: rotate(-138deg); }
+  88%, 100% { transform: rotate(0deg); }
+}
+
+@keyframes w-kneel-torso {
+  0%, 8% { transform: rotate(0deg); }
+  20%, 34% { transform: rotate(-6deg); }
+  54%, 72% { transform: rotate(86deg); }
+  90%, 100% { transform: rotate(0deg); }
+}
+
+@keyframes w-kneel-arms {
+  0%, 6% { transform: rotate(0deg); }
+  18% { transform: rotate(-152deg); }
+  23% { transform: rotate(-128deg); }
+  28% { transform: rotate(-154deg); }
+  34% { transform: rotate(-140deg); }
+  54%, 72% { transform: rotate(-152deg); }
+  90%, 100% { transform: rotate(0deg); }
+}
+
+@keyframes w-cheer {
+  0%, 100% { transform: translateY(0); }
+  45% { transform: translateY(-11%); }
+  60% { transform: translateY(-2%); }
+}
+
+@keyframes w-sign-wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+  50% { transform: translateX(-50%) rotate(4deg); }
+}
+
+/* A happy hop when poked or after arriving. */
+.w-person.w-joy { animation: w-joy 0.6s ease-out; }
+
+@keyframes w-joy {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-22%) rotate(-3deg); }
+  65% { transform: translateY(-4%) rotate(2deg); }
+}
+
+.w-person.w-appear { animation: w-fade-in 0.6s ease both; }
+
+@keyframes w-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Everyone bows at once ---------- */
+
+.w-mass .w-pose-stand .w-torso {
+  animation: w-mass-torso 3.2s ease-in-out both;
+  animation-delay: var(--md, 0s);
+}
+
+.w-mass .w-pose-stand .w-arm {
+  animation: w-mass-arms 3.2s ease-in-out both;
+  animation-delay: var(--md, 0s);
+}
+
+.w-mass .w-pose-kneel .w-torso {
+  animation: w-mass-kneel 3.2s ease-in-out both;
+  animation-delay: var(--md, 0s);
+}
+
+.w-mass .w-pose-kneel .w-arm {
+  animation: w-mass-kneel-arms 3.2s ease-in-out both;
+  animation-delay: var(--md, 0s);
+}
+
+.w-mass .w-pose-sign .w-torso { animation: none; }
+.w-mass .w-pose-sign .w-arm { animation: none; }
+
+.w-mass .w-pose-sign .w-body {
+  animation: w-cheer 0.5s ease-in-out 6;
+  animation-delay: var(--md, 0s);
+}
+
+@keyframes w-mass-torso {
+  0% { transform: rotate(0deg); }
+  18% { transform: rotate(-10deg); }
+  42%, 80% { transform: rotate(84deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes w-mass-arms {
+  0% { transform: rotate(0deg); }
+  18% { transform: rotate(-168deg); }
+  42%, 80% { transform: rotate(-140deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes w-mass-kneel {
+  0% { transform: rotate(0deg); }
+  18% { transform: rotate(-8deg); }
+  42%, 80% { transform: rotate(90deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes w-mass-kneel-arms {
+  0% { transform: rotate(0deg); }
+  18% { transform: rotate(-168deg); }
+  42%, 80% { transform: rotate(-156deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ---------- Walking in (after the mass rules, so walking wins) ---------- */
+
+.w-person.w-walking .w-torso { animation: none; transform: rotate(4deg); }
+.w-person.w-walking:not(.w-pose-sign) .w-arm-front { animation: w-step 0.36s ease-in-out infinite alternate; }
+.w-person.w-walking:not(.w-pose-sign) .w-arm-back { animation: w-step 0.36s ease-in-out infinite alternate-reverse; }
+.w-person.w-walking .w-leg-a { animation: w-step 0.36s ease-in-out infinite alternate; }
+.w-person.w-walking .w-leg-b { animation: w-step 0.36s ease-in-out infinite alternate-reverse; }
+.w-person.w-walking .w-body { animation: w-hop 0.18s ease-in-out infinite alternate; }
+
+@keyframes w-step {
+  from { transform: rotate(-24deg); }
+  to { transform: rotate(24deg); }
+}
+
+@keyframes w-hop {
+  from { transform: translateY(0); }
+  to { transform: translateY(-4%); }
+}
+
+/* ---------- Speech bubbles ---------- */
+
+.w-bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 88%;
+  z-index: 5;
+  width: max-content;
+  max-width: 172px;
+  padding: 7px 12px 8px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.15;
+  text-align: center;
+  color: #2b1440;
+  background: #fffaf0;
+  border-radius: 14px;
+  box-shadow: 0 0 0 2px var(--gold, #f5c542), 0 0 22px rgba(245, 197, 66, 0.45), 0 8px 18px rgba(0, 0, 0, 0.4);
+  transform: translateX(calc(-50% + var(--bx, 0px)));
+  transform-origin: calc(50% - var(--bx, 0px)) 130%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.w-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - var(--bx, 0px));
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-top-color: #fffaf0;
+  border-bottom: 0;
+}
+
+.w-bubble.w-bubble-low { bottom: auto; top: 18%; }
+.w-bubble.w-bubble-low::after { display: none; }
+
+.w-bubble.w-pop { animation: w-bubble 3.4s ease both; }
+
+@keyframes w-bubble {
+  0% { opacity: 0; transform: translateX(calc(-50% + var(--bx, 0px))) translateY(10px) scale(0.3); }
+  9% { opacity: 1; transform: translateX(calc(-50% + var(--bx, 0px))) translateY(-2px) scale(1.1); }
+  15% { opacity: 1; transform: translateX(calc(-50% + var(--bx, 0px))) translateY(0) scale(1); }
+  84% { opacity: 1; transform: translateX(calc(-50% + var(--bx, 0px))) translateY(-5px) scale(1); }
+  100% { opacity: 0; transform: translateX(calc(-50% + var(--bx, 0px))) translateY(-16px) scale(0.94); }
+}
+
+/* ---------- Altar ---------- */
+
+.w-altar {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  z-index: 1;
+  width: clamp(220px, 27vw, 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.w-rays {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 240%;
+  aspect-ratio: 1;
+  z-index: -2;
+  background: repeating-conic-gradient(from 0deg, rgba(255, 215, 110, 0.2) 0deg 5deg, transparent 5deg 15deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.55) 28%, transparent 60%);
+  mask-image: radial-gradient(circle, #000 0%, rgba(0, 0, 0, 0.55) 28%, transparent 60%);
+  transform: translate(-50%, -50%);
+  animation: w-spin 70s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes w-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.w-glow {
+  position: absolute;
+  left: 50%;
+  top: 30%;
+  width: 150%;
+  aspect-ratio: 1;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 120, 0.42), rgba(245, 197, 66, 0.12) 42%, transparent 66%);
+  transform: translate(-50%, -50%);
+  animation: w-breathe 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes w-breathe {
+  0%, 100% { opacity: 0.75; transform: translate(-50%, -50%) scale(0.96); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.w-blessed .w-glow { animation: w-blessed-glow 1.2s ease-in-out 3; }
+
+@keyframes w-blessed-glow {
+  0%, 100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.35); filter: brightness(1.5); }
+}
+
+.w-motes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.w-mote {
+  position: absolute;
+  left: var(--x);
+  bottom: 30%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffe9a6;
+  box-shadow: 0 0 6px 1px #ffd56b;
+  opacity: 0;
+  animation: w-rise var(--t, 7s) linear infinite;
+  animation-delay: var(--dl, 0s);
+}
+
+@keyframes w-rise {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  15% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(var(--dx, 0px), -240px) scale(1.1); }
+}
+
+.w-shrine {
+  position: relative;
+  width: 76%;
+}
+
+.w-halo {
+  position: absolute;
+  left: 50%;
+  top: -6%;
+  z-index: 2;
+  width: 54%;
+  height: 11%;
+  border: 4px solid var(--gold-2, #ffe7a3);
+  border-radius: 50%;
+  box-shadow: 0 0 18px var(--gold, #f5c542), 0 0 40px rgba(245, 197, 66, 0.5), inset 0 0 10px var(--gold, #f5c542);
+  transform: translateX(-50%);
+  animation: w-halo-float 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes w-halo-float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-7px); }
+}
+
+.w-frame {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 7px;
+  border: 0;
+  border-radius: 999px 999px 18px 18px;
+  cursor: pointer;
+  background: linear-gradient(160deg, #fff4cc, var(--gold, #f5c542) 28%, #a8741f 52%, var(--gold-2, #ffe7a3) 76%, #8a5a12);
+  box-shadow:
+    0 0 0 2px rgba(80, 40, 0, 0.55),
+    0 0 40px var(--glow, rgba(245, 197, 66, 0.45)),
+    0 0 100px rgba(245, 197, 66, 0.22);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-frame:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 0 0 2px rgba(80, 40, 0, 0.55),
+    0 0 60px rgba(245, 197, 66, 0.7),
+    0 0 140px rgba(245, 197, 66, 0.35);
+}
+
+.w-frame:focus-visible {
+  outline: 3px solid var(--gold-2, #ffe7a3);
+  outline-offset: 5px;
+}
+
+.w-frame.w-touched { animation: w-touch 0.7s ease-out; }
+
+@keyframes w-touch {
+  0% { transform: scale(1); filter: brightness(1); }
+  30% { transform: scale(1.06); filter: brightness(1.35); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.w-frame-in {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 999px 999px 12px 12px;
+  background: #fff;
+}
+
+.w-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 15%;
+}
+
+/* Warm vignette over the white studio background. */
+.w-frame-in::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 75% 70% at 50% 35%, transparent 55%, rgba(120, 60, 0, 0.42));
+  box-shadow: inset 0 0 0 2px rgba(255, 240, 200, 0.7);
+  pointer-events: none;
+}
+
+/* A slow shine sweeping over the photo. */
+.w-frame-in::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  z-index: 1;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.5) 50%, transparent 58%);
+  transform: translateX(-70%);
+  animation: w-shine 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes w-shine {
+  0%, 60% { transform: translateX(-70%); }
+  85%, 100% { transform: translateX(70%); }
+}
+
+.w-plaque {
+  position: relative;
+  z-index: 2;
+  width: max-content;
+  margin: -13px auto 0;
+  padding: 3px 14px 2px;
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: #3b1d00;
+  background: linear-gradient(180deg, #fff1c2, #e3b04a 55%, #b8862c);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #7a4d10, 0 4px 10px rgba(0, 0, 0, 0.45), 0 0 16px rgba(245, 197, 66, 0.5);
+}
+
+/* Altar table: candles, homework scrolls, slab, cloth, steps. */
+.w-table {
+  position: relative;
+  z-index: 3;
+  width: 112%;
+  margin-top: 10px;
+  padding: 0 3%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.w-candles {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(3px, 0.6vw, 6px);
+}
+
+.w-candle {
+  position: relative;
+  display: block;
+  width: clamp(9px, 1.1vw, 13px);
+  height: calc(var(--h) * 1px * var(--k, 1));
+  border-radius: 3px 3px 2px 2px;
+  background: linear-gradient(90deg, #d9c7a0, #fffaf0 40%, #e7d8b6 70%, #c8b38a);
+  box-shadow: 0 0 14px rgba(255, 190, 80, 0.35);
+}
+
+.w-candle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  width: 34%;
+  height: 32%;
+  border-radius: 0 0 6px 6px;
+  background: #fffaf0;
+}
+
+.w-candle::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 1.5px;
+  height: 4px;
+  margin-left: -0.75px;
+  background: #2b1a0e;
+}
+
+.w-flame {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 2px);
+  width: 10px;
+  height: 19px;
+  margin-left: -5px;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse 50% 60% at 50% 72%, #fff 0 20%, #ffe680 38%, #ff9d2e 66%, rgba(255, 80, 0, 0) 78%);
+  transform-origin: 50% 90%;
+  animation: w-flicker var(--fd, 1.3s) ease-in-out infinite alternate;
+  animation-delay: var(--fdl, 0s);
+}
+
+.w-flame::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 90, 0.42), transparent 65%);
+}
+
+@keyframes w-flicker {
+  0% { transform: scale(1, 1) skewX(0deg); opacity: 0.95; }
+  25% { transform: scale(0.9, 1.1) skewX(4deg); opacity: 1; }
+  50% { transform: scale(1.06, 0.94) skewX(-3deg); opacity: 0.9; }
+  75% { transform: scale(0.95, 1.12) skewX(2deg); opacity: 1; }
+  100% { transform: scale(1.02, 0.97) skewX(-4deg); opacity: 0.93; }
+}
+
+.w-scrolls {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+/* Beam of light rising from the homework. */
+.w-scrolls::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 30%;
+  width: 70%;
+  height: 120px;
+  z-index: -1;
+  background: linear-gradient(to top, rgba(255, 225, 140, 0.45), transparent);
+  filter: blur(6px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.w-pdf {
+  margin-bottom: 5px;
+  padding: 2px 8px 1px;
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: clamp(9px, 1vw, 11px);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  color: #3b1d00;
+  background: linear-gradient(180deg, #fff4cc, #f5c542);
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px #9c6a17, 0 0 18px rgba(255, 220, 120, 0.85);
+  animation: w-float 3s ease-in-out infinite;
+}
+
+@keyframes w-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.w-scroll-row {
+  display: flex;
+  gap: 1px;
+}
+
+.w-scroll {
+  position: relative;
+  display: block;
+  width: clamp(30px, 4vw, 48px);
+  height: clamp(10px, 1.2vw, 13px);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #fffbe8, #ecd29a 50%, #c9a25c);
+  box-shadow: 0 0 10px rgba(255, 220, 130, 0.65);
+}
+
+.w-scroll::before,
+.w-scroll::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  width: 6px;
+  bottom: -2px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #b0452f, #6d1d12);
+}
+
+.w-scroll::before { left: -3px; }
+.w-scroll::after { right: -3px; }
+
+.w-twinkle {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: 12px;
+  line-height: 1;
+  color: #fff1b8;
+  text-shadow: 0 0 8px #ffd56b;
+  animation: w-twinkle 2.4s ease-in-out infinite;
+  animation-delay: var(--dl, 0s);
+}
+
+@keyframes w-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(30deg); }
+}
+
+.w-slab {
+  position: relative;
+  z-index: 2;
+  width: 118%;
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #fff0bd, #d39d35 40%, #8a5a12);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5), 0 0 22px rgba(245, 197, 66, 0.4);
+}
+
+.w-pedestal {
+  position: relative;
+  width: 100%;
+  padding: 12px 8px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+  background:
+    linear-gradient(90deg, rgba(245, 197, 66, 0.55) 0 3px, transparent 3px calc(100% - 3px), rgba(245, 197, 66, 0.55) calc(100% - 3px)),
+    linear-gradient(180deg, #5b1f7a, #3a1056 60%, #26093b);
+  box-shadow: inset 0 10px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Gold fringe along the bottom of the altar cloth. */
+.w-pedestal::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 9px;
+  background: repeating-linear-gradient(90deg, #f5c542 0 3px, #a8741f 3px 6px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+
+.w-pedestal-top {
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: clamp(10px, 1.1vw, 13px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-2, #ffe7a3);
+  text-shadow: 0 0 10px rgba(245, 197, 66, 0.6);
+}
+
+.w-pedestal-sub {
+  font-style: italic;
+  font-size: clamp(13px, 1.3vw, 16px);
+  line-height: 1.2;
+  color: var(--text-dim, #b8a88c);
+}
+
+.w-steps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.w-steps i {
+  display: block;
+  height: 11px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #4a3a63, #2a1f3d);
+  border-top: 1px solid rgba(245, 197, 66, 0.55);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+.w-steps i:nth-child(1) { width: 110%; }
+.w-steps i:nth-child(2) { width: 124%; }
+
+.w-spark {
+  position: absolute;
+  z-index: 10;
+  font-size: 16px;
+  line-height: 1;
+  color: #ffe9a6;
+  text-shadow: 0 0 8px #ffc83d;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: w-burst 0.95s ease-out forwards;
+}
+
+@keyframes w-burst {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(0.4); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2) rotate(120deg); }
+}
+
+/* Chant shown during the mass bow. */
+.w-chant {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  z-index: 400;
+  width: 92%;
+  font-family: 'Ruslan Display', 'Russo One', Georgia, serif;
+  font-size: clamp(22px, 4.2vw, 44px);
+  line-height: 1.1;
+  text-align: center;
+  color: var(--gold-2, #ffe7a3);
+  text-shadow: 0 0 14px var(--gold, #f5c542), 0 0 40px rgba(245, 197, 66, 0.6), 0 3px 0 #5a2a00;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.w-chant.w-on { animation: w-chant 3.4s ease both; }
+
+@keyframes w-chant {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.6); }
+  14% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+  24% { transform: translateX(-50%) scale(1); }
+  80% { opacity: 1; transform: translateX(-50%) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) scale(1.15); }
+}
+
+/* ---------- Controls ---------- */
+
+.w-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px 16px;
+  max-width: 920px;
+  margin: 26px auto 0;
+}
+
+.w-counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 190px;
+  padding: 8px 20px 7px;
+  border: 1px solid rgba(245, 197, 66, 0.45);
+  border-radius: 16px;
+  background: rgba(23, 13, 42, 0.62);
+  box-shadow: inset 0 0 22px rgba(245, 197, 66, 0.12), 0 0 20px rgba(245, 197, 66, 0.12);
+}
+
+.w-count-label {
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--text, #f7efdd);
+}
+
+.w-count-num {
+  display: inline-block;
+  min-width: 1.6em;
+  font-weight: 400;
+  font-size: 26px;
+  color: var(--gold, #f5c542);
+  text-shadow: 0 0 12px rgba(245, 197, 66, 0.6);
+}
+
+.w-count-num.w-bump { animation: w-bump 0.5s ease-out; }
+
+@keyframes w-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5); color: #fff4cc; }
+  100% { transform: scale(1); }
+}
+
+.w-rank {
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.2;
+  color: var(--text-dim, #b8a88c);
+}
+
+.w-btn {
+  font-family: 'Russo One', 'Arial Black', sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  padding: 13px 22px;
+  border: 1.5px solid var(--gold, #f5c542);
+  border-radius: 999px;
+  color: var(--text, #f7efdd);
+  background: linear-gradient(180deg, rgba(255, 231, 163, 0.16), rgba(90, 30, 130, 0.6));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 18px rgba(245, 197, 66, 0.22);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), 0 0 30px rgba(245, 197, 66, 0.5);
+  filter: brightness(1.1);
+}
+
+.w-btn:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
+
+.w-btn:focus-visible {
+  outline: 3px solid var(--gold-2, #ffe7a3);
+  outline-offset: 3px;
+}
+
+.w-btn-join {
+  color: #2b1240;
+  background: linear-gradient(180deg, #fff1c2, #f5c542 50%, #c58a1c);
+  border-color: #fff1c2;
+}
+
+.w-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.w-hint {
+  margin: 14px auto 0;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.95em;
+  color: var(--text-dim, #b8a88c);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 1100px) {
+  .w-stage { --u: 70px; }
+}
+
+@media (max-width: 900px) {
+  .w-stage { --u: 58px; }
+}
+
+@media (max-width: 720px) {
+  .w-stage {
+    --u: 46px;
+    --k: 0.8;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    padding: 64px 4px 24px;
+    border-radius: 22px;
+  }
+
+  .w-altar {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+    width: min(250px, 70vw);
+    margin-bottom: 34px;
+  }
+
+  .w-flock-l { grid-column: 1; grid-row: 2; }
+  .w-flock-r { grid-column: 2; grid-row: 2; }
+
+  .w-bubble {
+    max-width: 132px;
+    font-size: 14px;
+    padding: 6px 9px 7px;
+  }
+
+  .w-btn { width: 100%; max-width: 340px; }
+}
+
+@media (max-width: 380px) {
+  .w-stage { --u: 39px; }
+}
+
+/* ---------- Reduced motion: static poses, fades only ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .w-torso, .w-arm, .w-leg, .w-body, .w-sign, .w-flame, .w-rays, .w-glow, .w-halo,
+  .w-pdf, .w-twinkle, .w-mote, .w-frame-in::before, .w-person.w-joy, .w-frame.w-touched,
+  .w-count-num.w-bump, .w-blessed .w-glow {
+    animation: none !important;
+  }
+
+  .w-pose-stand .w-torso { transform: rotate(30deg); }
+  .w-pose-stand .w-arm { transform: rotate(-138deg); }
+  .w-pose-kneel .w-torso { transform: rotate(82deg); }
+  .w-pose-kneel .w-arm { transform: rotate(-150deg); }
+  .w-pose-sign .w-torso { transform: rotate(-3deg); }
+  .w-pose-sign .w-arm { transform: rotate(-80deg); }
+  .w-sign { transform: translateX(-50%) rotate(-3deg); }
+
+  .w-mass .w-pose-stand:not(.w-pose-sign) .w-torso { transform: rotate(84deg); }
+  .w-mass .w-pose-kneel .w-torso { transform: rotate(90deg); }
+  .w-blessed .w-glow { filter: brightness(1.4); }
+
+  .w-mote, .w-frame-in::before { display: none; }
+  .w-frame, .w-btn { transition: none; }
+  .w-frame:hover { transform: none; }
+
+  .w-bubble.w-pop { animation: w-bubble-fade 3.4s ease both; }
+  .w-chant.w-on { animation: w-chant-fade 3.4s ease both; }
+}
+
+@keyframes w-bubble-fade {
+  0%, 100% { opacity: 0; }
+  8%, 88% { opacity: 1; }
+}
+
+@keyframes w-chant-fade {
+  0%, 100% { opacity: 0; }
+  10%, 85% { opacity: 1; }
+}
